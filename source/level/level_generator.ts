@@ -632,7 +632,7 @@ class LevelGenerator
                 this.jellyFishAmount = 4;
                 this.starFishAmount = 2;
 
-                LevelManager.water.isRising = false;
+                LevelManager.purpleInk.isRising = false;
                 HUD.stageText = "DEBUG"
             break;
         }

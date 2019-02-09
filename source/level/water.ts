@@ -1,12 +1,12 @@
-class Water
+class PurpleInk
 {
     public isRisingByDefault: boolean = true;
 
     private game: Phaser.Game;
 
-    private height: number; // Determines how high the water is
-    public bottomWaterSprite: Phaser.TileSprite;
-    public topWaterSprite: Phaser.TileSprite;
+    private height: number; // Determines how high the purple ink is
+    public bottomPurpleInkSprite: Phaser.TileSprite;
+    public topPurpleInkSprite: Phaser.TileSprite;
 
     public isRising: boolean = true;
 
@@ -18,17 +18,17 @@ class Water
     public get risingHeight(): number { return this.height; }
 
     // The squid dies if he is below this height
-    public get deadHeight(): number { return this.topWaterSprite.top; }
+    public get deadHeight(): number { return this.topPurpleInkSprite.top; }
 
     constructor(game: Phaser.Game)
     {
         this.game = game;
 
-        this.topWaterSprite = game.add.tileSprite(0, this.startingHeight, 240, this.tileSize, 'sheet');
-        this.topWaterSprite.setFrame(new Phaser.Frame(0, 58, 50, this.tileSize, this.tileSize, "frame0"));
+        this.topPurpleInkSprite = game.add.tileSprite(0, this.startingHeight, 240, this.tileSize, 'sheet');
+        this.topPurpleInkSprite.setFrame(new Phaser.Frame(0, 58, 50, this.tileSize, this.tileSize, "frame0"));
 
-        this.bottomWaterSprite = game.add.tileSprite(0, this.startingHeight, 240, 240, 'sheet');
-        this.bottomWaterSprite.setFrame(new Phaser.Frame(0, 68, 50, this.tileSize, this.tileSize, "frame0"));
+        this.bottomPurpleInkSprite = game.add.tileSprite(0, this.startingHeight, 240, 240, 'sheet');
+        this.bottomPurpleInkSprite.setFrame(new Phaser.Frame(0, 68, 50, this.tileSize, this.tileSize, "frame0"));
 
         this.Reset();
     }

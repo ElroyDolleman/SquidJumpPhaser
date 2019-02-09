@@ -2,7 +2,7 @@ class LevelManager
 {
     private static game: Phaser.Game;
 
-    public static water: Water;
+    public static purpleInk: PurpleInk;
     public static squid: Squid;
     private static camera: Camera;
 
@@ -88,10 +88,10 @@ class LevelManager
         this.backgroundPosition = new Phaser.Point(0, 0);
         this.backgroundGroup.add(this.background);
 
-        // Creating the water
-        this.water = new Water(game);
-        this.foregroundGroup.add(this.water.topWaterSprite);
-        this.foregroundGroup.add(this.water.bottomWaterSprite);
+        // Creating the purple ink
+        this.purpleInk = new PurpleInk(game);
+        this.foregroundGroup.add(this.purpleInk.topPurpleInkSprite);
+        this.foregroundGroup.add(this.purpleInk.bottomPurpleInkSprite);
 
         // Creating the squid
         this.squid = new Squid(game);
@@ -121,7 +121,7 @@ class LevelManager
         this.squid.reset();
         this.squid.sprite.position.set(this.levelWidth / 2, this.platforms[0].yPosition);
 
-        this.water.Reset();
+        this.purpleInk.Reset();
         this.camera.reset();
         GameTimer.reset();
 
@@ -159,7 +159,7 @@ class LevelManager
                 this.updatePlatforms();
                 this.updateBackground();
                 this.updatePowerUps();
-                this.updateWater();
+                this.updatePurpleInk();
 
                 // Update UI
                 GameTimer.update(this.game);
@@ -270,7 +270,7 @@ class LevelManager
         // Destroy the level
         this.destroyLevel();
 
-        this.water.isRising = this.water.isRisingByDefault;
+        this.purpleInk.isRising = this.purpleInk.isRisingByDefault;
 
         // Refresh the UI and create a new level
         HUD.refreshUI();
@@ -294,16 +294,16 @@ class LevelManager
         this.platforms = [];
     }
 
-    private static updateWater()
+    private static updatePurpleInk()
     {
-        this.water.Update();
+        this.purpleInk.Update();
 
         // Update the sprite
-        this.camera.placeTileSpriteInScreen(this.water.topWaterSprite, Math.round(this.water.risingHeight));
-        this.water.bottomWaterSprite.position.y = this.water.topWaterSprite.bottom;
-        this.water.bottomWaterSprite.height = Math.max(0, this.camera.height - this.water.topWaterSprite.bottom);
+        this.camera.placeTileSpriteInScreen(this.purpleInk.topPurpleInkSprite, Math.round(this.purpleInk.risingHeight));
+        this.purpleInk.bottomPurpleInkSprite.position.y = this.purpleInk.topPurpleInkSprite.bottom;
+        this.purpleInk.bottomPurpleInkSprite.height = Math.max(0, this.camera.height - this.purpleInk.topPurpleInkSprite.bottom);
 
-        if (this.water.deadHeight < this.squid.sprite.bottom) {
+        if (this.purpleInk.deadHeight < this.squid.sprite.bottom) {
             this.squid.die();
             UIManager.openDialog(this.loseLifeMessage, this.retryLevelEvent);
         }

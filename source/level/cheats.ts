@@ -6,7 +6,7 @@ class Cheats
     private static readonly maxCommands: number = 13;
 
     private static jellyPowerCheat = [Phaser.Keyboard.J, Phaser.Keyboard.E, Phaser.Keyboard.L, Phaser.Keyboard.L, Phaser.Keyboard.Y];
-    private static stopWaterPowerCheat = [Phaser.Keyboard.W, Phaser.Keyboard.A, Phaser.Keyboard.T, Phaser.Keyboard.E, Phaser.Keyboard.R];
+    private static stopPurpleInkPowerCheat = [Phaser.Keyboard.W, Phaser.Keyboard.A, Phaser.Keyboard.T, Phaser.Keyboard.E, Phaser.Keyboard.R];
     private static maxLifesCheat = [Phaser.Keyboard.L, Phaser.Keyboard.I, Phaser.Keyboard.F, Phaser.Keyboard.E, Phaser.Keyboard.S];
     private static zeroLifesCheat = [Phaser.Keyboard.D, Phaser.Keyboard.E, Phaser.Keyboard.A, Phaser.Keyboard.D];
     private static nextStageCheat = [Phaser.Keyboard.N, Phaser.Keyboard.E, Phaser.Keyboard.X, Phaser.Keyboard.T];
@@ -58,12 +58,12 @@ class Cheats
             HUD.refreshUI();
             console.log("Double Jump Activated");
         }
-        else if (Cheats.compareCommandsWithCheat(Cheats.stopWaterPowerCheat)) {
-            // Stops the water from rising, or makes it start rising if it was already stopped
-            LevelManager.water.isRisingByDefault = !LevelManager.water.isRisingByDefault;
-            LevelManager.water.isRising = LevelManager.water.isRisingByDefault;
+        else if (Cheats.compareCommandsWithCheat(Cheats.stopPurpleInkPowerCheat)) {
+            // Stops the purple ink from rising, or makes it start rising if it was already stopped
+            LevelManager.purpleInk.isRisingByDefault = !LevelManager.purpleInk.isRisingByDefault;
+            LevelManager.purpleInk.isRising = LevelManager.purpleInk.isRisingByDefault;
             HUD.refreshUI();
-            console.log("Water Stopped");
+            console.log("Purple Ink Stopped");
         }
         else if (Cheats.compareCommandsWithCheat(Cheats.maxLifesCheat)) {
             HUD.lifes = HUD.maxLifes;

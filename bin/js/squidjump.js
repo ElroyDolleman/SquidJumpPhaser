@@ -813,12 +813,12 @@ var Cheats = /** @class */ (function () {
             HUD.refreshUI();
             console.log("Double Jump Activated");
         }
-        else if (Cheats.compareCommandsWithCheat(Cheats.stopWaterPowerCheat)) {
-            // Stops the water from rising, or makes it start rising if it was already stopped
-            LevelManager.water.isRisingByDefault = !LevelManager.water.isRisingByDefault;
-            LevelManager.water.isRising = LevelManager.water.isRisingByDefault;
+        else if (Cheats.compareCommandsWithCheat(Cheats.stopPurpleInkPowerCheat)) {
+            // Stops the purple ink from rising, or makes it start rising if it was already stopped
+            LevelManager.purpleInk.isRisingByDefault = !LevelManager.purpleInk.isRisingByDefault;
+            LevelManager.purpleInk.isRising = LevelManager.purpleInk.isRisingByDefault;
             HUD.refreshUI();
-            console.log("Water Stopped");
+            console.log("Purple Ink Stopped");
         }
         else if (Cheats.compareCommandsWithCheat(Cheats.maxLifesCheat)) {
             HUD.lifes = HUD.maxLifes;
@@ -867,7 +867,7 @@ var Cheats = /** @class */ (function () {
     Cheats.keyCommandsInterval = 300; // Miliseconds
     Cheats.maxCommands = 13;
     Cheats.jellyPowerCheat = [Phaser.Keyboard.J, Phaser.Keyboard.E, Phaser.Keyboard.L, Phaser.Keyboard.L, Phaser.Keyboard.Y];
-    Cheats.stopWaterPowerCheat = [Phaser.Keyboard.W, Phaser.Keyboard.A, Phaser.Keyboard.T, Phaser.Keyboard.E, Phaser.Keyboard.R];
+    Cheats.stopPurpleInkPowerCheat = [Phaser.Keyboard.W, Phaser.Keyboard.A, Phaser.Keyboard.T, Phaser.Keyboard.E, Phaser.Keyboard.R];
     Cheats.maxLifesCheat = [Phaser.Keyboard.L, Phaser.Keyboard.I, Phaser.Keyboard.F, Phaser.Keyboard.E, Phaser.Keyboard.S];
     Cheats.zeroLifesCheat = [Phaser.Keyboard.D, Phaser.Keyboard.E, Phaser.Keyboard.A, Phaser.Keyboard.D];
     Cheats.nextStageCheat = [Phaser.Keyboard.N, Phaser.Keyboard.E, Phaser.Keyboard.X, Phaser.Keyboard.T];
@@ -1402,7 +1402,7 @@ var LevelGenerator = /** @class */ (function () {
                 this.redFishAmount = 4;
                 this.jellyFishAmount = 4;
                 this.starFishAmount = 2;
-                LevelManager.water.isRising = false;
+                LevelManager.purpleInk.isRising = false;
                 HUD.stageText = "DEBUG";
                 break;
         }
@@ -1522,10 +1522,10 @@ var LevelManager = /** @class */ (function () {
         this.background.setFrame(new Phaser.Frame(0, 2, 126, 240, 240, "frame0"));
         this.backgroundPosition = new Phaser.Point(0, 0);
         this.backgroundGroup.add(this.background);
-        // Creating the water
-        this.water = new Water(game);
-        this.foregroundGroup.add(this.water.topWaterSprite);
-        this.foregroundGroup.add(this.water.bottomWaterSprite);
+        // Creating the purple ink
+        this.purpleInk = new PurpleInk(game);
+        this.foregroundGroup.add(this.purpleInk.topPurpleInkSprite);
+        this.foregroundGroup.add(this.purpleInk.bottomPurpleInkSprite);
         // Creating the squid
         this.squid = new Squid(game);
         this.objectGroup.add(this.squid.sprite);
@@ -1545,7 +1545,7 @@ var LevelManager = /** @class */ (function () {
         // Placing the squid on the ground
         this.squid.reset();
         this.squid.sprite.position.set(this.levelWidth / 2, this.platforms[0].yPosition);
-        this.water.Reset();
+        this.purpleInk.Reset();
         this.camera.reset();
         GameTimer.reset();
         this.powerUps.forEach(function (power) {
@@ -1573,7 +1573,7 @@ var LevelManager = /** @class */ (function () {
                 this.updatePlatforms();
                 this.updateBackground();
                 this.updatePowerUps();
-                this.updateWater();
+                this.updatePurpleInk();
                 // Update UI
                 GameTimer.update(this.game);
                 HUD.updateTimer();
@@ -1662,7 +1662,7 @@ var LevelManager = /** @class */ (function () {
         }
         // Destroy the level
         this.destroyLevel();
-        this.water.isRising = this.water.isRisingByDefault;
+        this.purpleInk.isRising = this.purpleInk.isRisingByDefault;
         // Refresh the UI and create a new level
         HUD.refreshUI();
         this.createLevel(HUD.currentStage);
@@ -1680,13 +1680,13 @@ var LevelManager = /** @class */ (function () {
         this.powerUps = [];
         this.platforms = [];
     };
-    LevelManager.updateWater = function () {
-        this.water.Update();
+    LevelManager.updatePurpleInk = function () {
+        this.purpleInk.Update();
         // Update the sprite
-        this.camera.placeTileSpriteInScreen(this.water.topWaterSprite, Math.round(this.water.risingHeight));
-        this.water.bottomWaterSprite.position.y = this.water.topWaterSprite.bottom;
-        this.water.bottomWaterSprite.height = Math.max(0, this.camera.height - this.water.topWaterSprite.bottom);
-        if (this.water.deadHeight < this.squid.sprite.bottom) {
+        this.camera.placeTileSpriteInScreen(this.purpleInk.topPurpleInkSprite, Math.round(this.purpleInk.risingHeight));
+        this.purpleInk.bottomPurpleInkSprite.position.y = this.purpleInk.topPurpleInkSprite.bottom;
+        this.purpleInk.bottomPurpleInkSprite.height = Math.max(0, this.camera.height - this.purpleInk.topPurpleInkSprite.bottom);
+        if (this.purpleInk.deadHeight < this.squid.sprite.bottom) {
             this.squid.die();
             UIManager.openDialog(this.loseLifeMessage, this.retryLevelEvent);
         }
@@ -1747,8 +1747,8 @@ var LevelManager = /** @class */ (function () {
     LevelManager.lifeBonusLevels = [16];
     return LevelManager;
 }());
-var Water = /** @class */ (function () {
-    function Water(game) {
+var PurpleInk = /** @class */ (function () {
+    function PurpleInk(game) {
         this.isRisingByDefault = true;
         this.isRising = true;
         this.startingHeight = -733;
@@ -1756,32 +1756,32 @@ var Water = /** @class */ (function () {
         this.risingSpeed = 55; // Pixels per second
         this.tileSize = 8;
         this.game = game;
-        this.topWaterSprite = game.add.tileSprite(0, this.startingHeight, 240, this.tileSize, 'sheet');
-        this.topWaterSprite.setFrame(new Phaser.Frame(0, 58, 50, this.tileSize, this.tileSize, "frame0"));
-        this.bottomWaterSprite = game.add.tileSprite(0, this.startingHeight, 240, 240, 'sheet');
-        this.bottomWaterSprite.setFrame(new Phaser.Frame(0, 68, 50, this.tileSize, this.tileSize, "frame0"));
+        this.topPurpleInkSprite = game.add.tileSprite(0, this.startingHeight, 240, this.tileSize, 'sheet');
+        this.topPurpleInkSprite.setFrame(new Phaser.Frame(0, 58, 50, this.tileSize, this.tileSize, "frame0"));
+        this.bottomPurpleInkSprite = game.add.tileSprite(0, this.startingHeight, 240, 240, 'sheet');
+        this.bottomPurpleInkSprite.setFrame(new Phaser.Frame(0, 68, 50, this.tileSize, this.tileSize, "frame0"));
         this.Reset();
     }
-    Object.defineProperty(Water.prototype, "risingHeight", {
+    Object.defineProperty(PurpleInk.prototype, "risingHeight", {
         get: function () { return this.height; },
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(Water.prototype, "deadHeight", {
+    Object.defineProperty(PurpleInk.prototype, "deadHeight", {
         // The squid dies if he is below this height
-        get: function () { return this.topWaterSprite.top; },
+        get: function () { return this.topPurpleInkSprite.top; },
         enumerable: true,
         configurable: true
     });
-    Water.prototype.Reset = function () {
+    PurpleInk.prototype.Reset = function () {
         this.height = this.isRising ? this.startingHeight : this.nonMovingHeight;
     };
-    Water.prototype.Update = function () {
+    PurpleInk.prototype.Update = function () {
         if (this.isRising) {
             this.height += this.risingSpeed * GameTimer.levelDeltaTime;
         }
     };
-    return Water;
+    return PurpleInk;
 }());
 var DialogMessage = /** @class */ (function () {
     function DialogMessage(game, text, x, y, width, height) {
